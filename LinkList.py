@@ -3,6 +3,12 @@ class Node:
         self.value = value
         self.next = None
 
+class DNode:
+    def __init__(self, value = None):
+        self.value = value
+        self.next = None
+        self.prev = None
+
 class LL:
 
     #########################
@@ -276,6 +282,9 @@ class Stack(LL):
     def __init__(self):
         super().__init__()
 
+    def isEmpty(self):
+        return self.head == None
+
     def push(self, v):
         if self.head == None:
             self.head = Node(v)
@@ -290,6 +299,17 @@ class Stack(LL):
             self.head = self.head.next
             return v
         return
+    
+    def copy(self):
+        copyS = Stack()
+        ph = []
+        while self.isEmpty() == False:
+            ph.append(self.pop())
+        ph.reverse()
+        for el in ph:
+            copyS.push(el)
+            self.push(el)
+        return copyS
     
     def decode(izraz):
         s = Stack()
@@ -311,6 +331,12 @@ class Stack(LL):
             else:
                 s.push(int(el))
         return s.pop()
+    
+class DLL:
+    pass
+
+#dodati DLL
+#dodati insert u DLL i LL
 
 
 a = LL()
@@ -407,3 +433,9 @@ izraz2 = '3 5 + 2 3 + * 7 -'
 reza2 = Stack.decode(izraz2)
 print(izraz2)
 print(reza2)
+s = Stack()
+s.push(2)
+s.push(5)
+s.push(7)
+print(s)
+print(s.copy())
