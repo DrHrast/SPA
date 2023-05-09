@@ -26,6 +26,17 @@ class LL:
             curr = curr.next
         return clan
     
+    def __len__(self):
+        lenght = 1
+        if self.head == None:
+            return 0
+        else:
+            tmp = self.head
+            while tmp.next != None:
+                tmp = tmp.next
+                lenght += 1
+            return lenght
+    
     #########################
     #   STATIČKE            #
     #########################
@@ -38,6 +49,16 @@ class LL:
         if br > 0:
             return False
         return True
+    
+    def is_odd(v):
+        if v % 2 == 1:
+            return True
+        return False
+    
+    def is_even(v):
+        if v % 2 == 0:
+            return True
+        return False
     
     #########################
     #   OSTALE              #
@@ -76,6 +97,38 @@ class LL:
                     curr = curr.next
                 return IndexError('Out of bound')
             
+    def insert_per_index(self, n = 0, v = 0):
+        ind = 1
+        if n == 0:
+            self.add_left(v)
+        elif n > self.__len__() - 1:
+            self.add_right(v)
+        else:
+            tmp2 = self.head.next
+            tmp = self.head
+            while ind < n:
+                tmp2 = tmp2.next
+                tmp = tmp.next
+                ind += 1
+            tmp.next = Node(v)
+            tmp.next.next = tmp2
+
+    def insert_per_position(self, n = 0, v = 0):
+        pos = 2
+        if n == 1:
+            self.add_left(v)
+        elif n > self.__len__():
+            self.add_right(v)
+        else:
+            tmp2 = self.head.next
+            tmp = self.head
+            while pos < n:
+                tmp2 = tmp2.next
+                tmp = tmp.next
+                pos += 1
+            tmp.next = Node(v)
+            tmp.next.next = tmp2
+ 
     def add_left(self, v):
         tmp = Node(v)
         tmp.next = self.head
@@ -119,6 +172,42 @@ class LL:
         while curr.next != None:
             v = curr.next.value
             if LL.is_prime(v) == True:
+                curr.next = curr.next.next
+            else:
+                curr = curr.next
+
+    def remove_odds(self):
+        if self.head == None:
+            return 
+        curr = self.head
+        while self.head.next != None:
+            v = self.head.value
+            if LL.is_odd(v) == True:
+                self.head = self.head.next
+            elif LL.is_odd(v) == True and self.head.next == None:
+                self.head = None
+            else: break
+        while curr.next != None:
+            v = curr.next.value
+            if LL.is_odd(v) == True:
+                curr.next = curr.next.next
+            else:
+                curr = curr.next
+
+    def remove_evens(self):
+        if self.head == None:
+            return 
+        curr = self.head
+        while self.head.next != None:
+            v = self.head.value
+            if LL.is_even(v) == True:
+                self.head = self.head.next
+            elif LL.is_even(v) == True and self.head.next == None:
+                self.head = None
+            else: break
+        while curr.next != None:
+            v = curr.next.value
+            if LL.is_even(v) == True:
                 curr.next = curr.next.next
             else:
                 curr = curr.next
@@ -224,7 +313,6 @@ class LL:
                 n += 1
                 
 
-
 class LL2(LL):
     def __init__(self):
         super().__init__()
@@ -237,12 +325,111 @@ class LL2(LL):
             tmp = Node(v)
             self.tail.next = tmp
             self.tail = self.tail.next
+    
+class DLL:
+    #########################
+    #   UGRAĐENE            #
+    #########################
+
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def __str__(self) -> str:
+        curr = self.head
+        clan = ''
+        while curr != None:
+            clan += str(curr.value) + ' '
+            curr = curr.next
+        return clan
+    
+    def __sizeof__(self) -> int:
+        if self.head == None:
+            return 0
+        else:
+            lenght = 1
+            tmp = self.head
+            while tmp != self.tail:
+                lenght += 1
+                tmp = tmp.next
+            return lenght
+
+    #########################
+    #   OSTALE              #
+    #########################
+
+    def append(self, v):
+        v = DNode(v)
+        if self.head == None:
+            self.head = self.tail = v
+        else:
+            self.tail.next = v
+            self.tail.next.prev = self.tail
+            self.tail = self.tail.next
+    
+    def ins_first(self, v):
+        v = DNode(v)
+        if self.head == None:
+            self.head = self.tail = v
+        else:
+            self.head.prev = v
+            self.head.prev.next = self.head
+            self.head = self.head.prev
+
+    def reverse(self):
+        if self.head == None:
+            return
+        else:
+            tmp = self.tail
+            while tmp != None:
+                print(f'{tmp.value}', end = ' ')
+                tmp = tmp.prev
+            print()
+    
+    def insert_per_index(self, n = 0, v = 0):
+        ind = 1
+        if n == 0:
+            self.ins_first(v)
+        elif n > self.__sizeof__() - 1:
+            self.append(v)
+        else:
+            tmp2 = self.head.next
+            tmp = self.head
+            while ind < n:
+                tmp2 = tmp2.next
+                tmp = tmp.next
+                ind += 1
+            tmp.next = DNode(v)
+            tmp.next.next = tmp2
+            tmp.next.prev = tmp            
+            tmp2.prev = tmp.next
+
+    def insert_per_position(self, n = 0, v = 0):
+        ind = 2
+        if n == 0:
+            self.ins_first(v)
+        elif n > self.__sizeof__():
+            self.append(v)
+        else:
+            tmp2 = self.head.next
+            tmp = self.head
+            while ind < n:
+                tmp2 = tmp2.next
+                tmp = tmp.next
+                ind += 1
+            tmp.next = DNode(v)
+            tmp.next.next = tmp2
+            tmp.next.prev = tmp            
+            tmp2.prev = tmp.next
 
 class Queue(LL):
     def __init__(self):
         super().__init__()
         self.tail = None
 
+    def isEmpty(self):
+        return self.head == None
+    
     def enqueue(self, v):
         if self.head == None:
             self.head = self.tail = Node(v)
@@ -258,9 +445,6 @@ class Queue(LL):
             v = self.head.value
             self.head = self.head.next
             return v
-    
-    def isEmpty(self):
-        return self.head == None
     
     def decode(izraz):
         red = Queue()
@@ -331,12 +515,6 @@ class Stack(LL):
             else:
                 s.push(int(el))
         return s.pop()
-    
-class DLL:
-    pass
-
-#dodati DLL
-#dodati insert u DLL i LL
 
 
 a = LL()
@@ -346,6 +524,7 @@ a.head.next.next = Node(5)
 a.head.next.next.next = Node(8)
 a.head.next.next.next.next = Node(1)
 
+print('#' * 15)
 print(a)
 print(a.nElementa(5))
 print(a.nIndexa(4))
@@ -404,6 +583,11 @@ a.add_right(1)
 print(a)
 a.reverse()
 print(a)
+a.insert_per_index(2, 6)
+a.insert_per_index(0, 4)
+a.insert_per_index(11, 2)
+a.insert_per_index(14, 1)
+print('Sa index insertom:', a)
 
 
 print('\n\n')
@@ -439,3 +623,20 @@ s.push(5)
 s.push(7)
 print(s)
 print(s.copy())
+
+print('\n\n')
+print('#' * 15)
+dll = DLL()
+dll.append(5)
+dll.append(8)
+dll.ins_first(2)
+dll.ins_first(2)
+print(dll)
+dll.reverse()
+dll.insert_per_index(2, 3)
+print('nešto:', dll)
+dll.insert_per_index(4, 7)
+dll.insert_per_index(10, 1)
+print('nešto:', dll)
+dll.reverse()
+print(dll)
