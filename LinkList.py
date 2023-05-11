@@ -1,3 +1,13 @@
+#########################
+#   IMPORTS             #
+#########################
+
+import random
+
+#########################
+#   KLASE               #
+#########################
+
 class Node:
     def __init__(self, value = None):
         self.value = value
@@ -60,9 +70,16 @@ class LL:
             return True
         return False
     
+    def randomN(a, b):
+        return random.randint(a, (b + 1))
+    
     #########################
     #   OSTALE              #
     #########################
+
+    def isEmpty(self):
+        return self.head == None
+
 
     def nElementa(self, n):
         br = 1
@@ -311,6 +328,11 @@ class LL:
                 tmp.value, tmp2.value = tmp2.value, tmp.value
                 tmp = tmp.next
                 n += 1
+
+    def ins_N_rand(self, nBrojeva = 1, min = 1, max = 9):
+        for i in range(nBrojeva):
+            n = LL.randomN(min, max)
+            self.add_right(n)
                 
 
 class LL2(LL):
@@ -325,6 +347,14 @@ class LL2(LL):
             tmp = Node(v)
             self.tail.next = tmp
             self.tail = self.tail.next
+
+    def addLeft(self, v):
+        if self.head == None:
+            self.head = self.tail = Node(v)
+        else:
+            tmp = Node(v)
+            tmp.next = self.head
+            self.head = tmp
     
 class DLL:
     #########################
@@ -353,6 +383,32 @@ class DLL:
                 lenght += 1
                 tmp = tmp.next
             return lenght
+        
+    #########################
+    #   STATIČKE            #
+    #########################
+
+    def is_prime(v):
+        br = 0
+        for i in range(2, v):
+            if v % i == 0:
+                br += 1
+        if br > 0:
+            return False
+        return True
+    
+    def is_odd(v):
+        if v % 2 == 1:
+            return True
+        return False
+    
+    def is_even(v):
+        if v % 2 == 0:
+            return True
+        return False
+
+    def randomN(a, b):
+        return random.randint(a, (b + 1))
 
     #########################
     #   OSTALE              #
@@ -422,6 +478,12 @@ class DLL:
             tmp.next.prev = tmp            
             tmp2.prev = tmp.next
 
+    def ins_N_rand(self, nBrojeva = 1, min = 1, max = 9):
+        for i in range(nBrojeva):
+            n = DLL.randomN(min, max)
+            self.append(n)
+
+
 class Queue(LL):
     def __init__(self):
         super().__init__()
@@ -445,6 +507,16 @@ class Queue(LL):
             v = self.head.value
             self.head = self.head.next
             return v
+        
+    def copy(self):
+        copyQ = Queue()
+        ph = []
+        while not self.isEmpty():
+            ph.append(self.dequeue())
+        for el in ph:
+            copyQ.enqueue(el)
+            self.enqueue(el)
+        return copyQ
     
     def decode(izraz):
         red = Queue()
@@ -461,6 +533,7 @@ class Queue(LL):
                 red.enqueue(int(e))
                 print(red)
         return red
+    
     
 class Stack(LL):
     def __init__(self):
@@ -588,7 +661,9 @@ a.insert_per_index(0, 4)
 a.insert_per_index(11, 2)
 a.insert_per_index(14, 1)
 print('Sa index insertom:', a)
-
+ab = LL()
+ab.ins_N_rand(5)
+print('random brojevi:', ab)
 
 print('\n\n')
 print('#' * 15)
@@ -601,13 +676,21 @@ b.addRight(2)
 print(b)
 print('tail value', b.tail.value)
 print('head value', b.head.value)
+b.addLeft(7)
+b.addLeft(4)
+print(b)
 
 print('\n\n')
+print('Queue')
 print('#' * 15)
 izraz = '1 + 3 6 - - 9 8 + + 7 -'
-print(Queue.decode(izraz))
+q1 = Queue()
+q1 = Queue.decode(izraz)
+print('Og:', q1)
+print('Kopija:', q1.copy())
 
 print('\n\n')
+print('Stack')
 print('#' * 15)
 izraz = '1 2 + 3 4 + * 5 +'
 reza = Stack.decode(izraz)
@@ -621,8 +704,8 @@ s = Stack()
 s.push(2)
 s.push(5)
 s.push(7)
-print(s)
-print(s.copy())
+print('Og:', s)
+print('Kopija:', s.copy())
 
 print('\n\n')
 print('#' * 15)
