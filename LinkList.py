@@ -285,7 +285,7 @@ class LL:
                 else:
                     tmp = tmp.next
 
-    def f(self):
+    def bubble_first_step(self):
         if self.head == None or self.head.next == None:
             return
         else:
@@ -333,6 +333,9 @@ class LL:
         for i in range(nBrojeva):
             n = LL.randomN(min, max)
             self.add_right(n)
+
+    def clear(self):
+        return self.__init__()
                 
 
 class LL2(LL):
@@ -355,6 +358,9 @@ class LL2(LL):
             tmp = Node(v)
             tmp.next = self.head
             self.head = tmp
+
+    def clear(self):
+        return self.__init__()
     
 class DLL:
     #########################
@@ -373,7 +379,7 @@ class DLL:
             curr = curr.next
         return clan
     
-    def __sizeof__(self) -> int:
+    def __len__(self) -> int:
         if self.head == None:
             return 0
         else:
@@ -432,7 +438,7 @@ class DLL:
             self.head.prev.next = self.head
             self.head = self.head.prev
 
-    def reverse(self):
+    def reverse_print(self):
         if self.head == None:
             return
         else:
@@ -441,12 +447,24 @@ class DLL:
                 print(f'{tmp.value}', end = ' ')
                 tmp = tmp.prev
             print()
+
+    def reverse(self):
+        if self.head == None:
+            return
+        else:
+            n = len(self) // 2
+            tmp = self.head
+            tmp2 = self.tail
+            for i in range(n):
+                tmp.value, tmp2.value = tmp2.value, tmp.value
+                tmp = tmp.next
+                tmp2 = tmp2.prev
     
     def insert_per_index(self, n = 0, v = 0):
         ind = 1
         if n == 0:
             self.ins_first(v)
-        elif n > self.__sizeof__() - 1:
+        elif n > self.__len__() - 1:
             self.append(v)
         else:
             tmp2 = self.head.next
@@ -464,7 +482,7 @@ class DLL:
         ind = 2
         if n == 0:
             self.ins_first(v)
-        elif n > self.__sizeof__():
+        elif n > self.__len__():
             self.append(v)
         else:
             tmp2 = self.head.next
@@ -482,6 +500,9 @@ class DLL:
         for i in range(nBrojeva):
             n = DLL.randomN(min, max)
             self.append(n)
+
+    def clear(self):
+        return self.__init__()
 
 
 class Queue(LL):
@@ -533,6 +554,9 @@ class Queue(LL):
                 red.enqueue(int(e))
                 print(red)
         return red
+    
+    def clear(self):
+        return self.__init__()
     
     
 class Stack(LL):
@@ -588,6 +612,9 @@ class Stack(LL):
             else:
                 s.push(int(el))
         return s.pop()
+    
+    def clear(self):
+        return self.__init__()
 
 
 a = LL()
@@ -642,7 +669,7 @@ a.add_right(12)
 a.add_right(3)
 a.add_right(8)
 print(a)
-a.f()
+a.bubble_first_step()
 print('semi sort:', a)
 a.sort()
 print('full sort:', a)
@@ -664,6 +691,10 @@ print('Sa index insertom:', a)
 ab = LL()
 ab.ins_N_rand(5)
 print('random brojevi:', ab)
+ab.bubble_first_step()
+print(ab)
+ab.sort()
+print(ab)
 
 print('\n\n')
 print('#' * 15)
@@ -721,5 +752,9 @@ print('nešto:', dll)
 dll.insert_per_index(4, 7)
 dll.insert_per_index(10, 1)
 print('nešto:', dll)
+dll.reverse_print()
+print('Og', dll)
 dll.reverse()
+print(dll)
+dll.clear()
 print(dll)
